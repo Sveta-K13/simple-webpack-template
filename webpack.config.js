@@ -55,12 +55,15 @@ module.exports = Object.keys(languages).map(function(language) {
       new I18nPlugin(
         languages[language],
       ),
-       new HtmlWebpackPlugin({
+      new HtmlWebpackPlugin({
         template: 'src/index.html',
         filename: 'index.' + language + '.html',
         minify: {
           removeComments: true,
         },
+      }),
+      new webpack.DefinePlugin({
+        'SERVICE_URL': JSON.stringify("https://google.com")
       }),
     ]
   };
