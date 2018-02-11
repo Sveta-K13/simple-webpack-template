@@ -20,63 +20,34 @@ module.exports = Object.keys(languages).map(function(language) {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.' + language + '.js',
-      publicPath: '/dist',                          // New
+      // publicPath: '/',                          // for auto generate link in html
     },
     module: {
       rules: [
           // {
-          //     test: indexHtml,
-          //     use: [
+          //     test: /\.css$/,
+          //     loaders: [
           //         {
           //             loader: "file-loader",
-          //             options: {
-          //                 name: "[name]." + language + ".[ext]",
-          //             },
           //         },
           //         {
           //             loader: "extract-loader",
           //         },
+          //     ],
+          // },
+          // {
+          //     test: /\.jpg$/,
+          //     loaders: [
           //         {
-          //             loader: "html-loader",
-          //             options: {
-          //                 attrs: ["img:src", "link:href"],
-          //                 interpolate: true,
-          //                 minimize: true,
-          //                 root: path.resolve(__dirname, 'assets'),
-          //             },
+          //             loader: "file-loader"
           //         },
           //     ],
           // },
-          {
-              test: /\.css$/,
-              loaders: [
-                  {
-                      loader: "file-loader",
-                  },
-                  {
-                      loader: "extract-loader",
-                  },
-              ],
-          },
-          {
-              test: /\.jpg$/,
-              loaders: [
-                  {
-                      loader: "file-loader"
-                  },
-              ],
-          },
       ],
       loaders: [
       {
         test: /\.html$/,
         loader: 'html-loader',
-        options: {
-            attrs: ["img:src", "link:href"],
-            interpolate: true,
-            minimize: true,
-            root: path.resolve(__dirname, 'dist'),
-        },
       },
       ],
     },
@@ -87,6 +58,9 @@ module.exports = Object.keys(languages).map(function(language) {
        new HtmlWebpackPlugin({
         template: 'src/index.html',
         filename: 'index.' + language + '.html',
+        minify: {
+          removeComments: true,
+        },
       }),
     ]
   };
