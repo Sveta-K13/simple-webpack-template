@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const I18nPlugin = require("i18n-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const I18nPlugin = require("i18n-webpack-plugin");
 const languages = {
   "en": null,
   "de": require("./languages/de.json")
@@ -24,17 +25,19 @@ module.exports = Object.keys(languages).map(function(language) {
     },
     module: {
       rules: [
-          // {
-          //     test: /\.css$/,
-          //     loaders: [
-          //         {
-          //             loader: "file-loader",
-          //         },
-          //         {
-          //             loader: "extract-loader",
-          //         },
-          //     ],
-          // },
+        {
+          test: /\.css$/,
+          use: ExtractTextPlugin.extract({
+            use: [
+              {
+                loader: 'css-loader',
+                options: { importLoaders: 1 },
+              },
+              'postcss-loader',
+            ],
+          }),
+          exclude: /\.config.css$/,
+        },
           // {
           //     test: /\.jpg$/,
           //     loaders: [
@@ -45,10 +48,10 @@ module.exports = Object.keys(languages).map(function(language) {
           // },
       ],
       loaders: [
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
+        {
+          test: /\.html$/,
+          loader: 'html-loader',
+        },
       ],
     },
     plugins: [
@@ -56,7 +59,7 @@ module.exports = Object.keys(languages).map(function(language) {
         languages[language],
       ),
       new HtmlWebpackPlugin({
-        template: 'src/index.html',
+        template: indexHtml,
         filename: 'index.' + language + '.html',
         minify: {
           removeComments: true,
@@ -65,6 +68,7 @@ module.exports = Object.keys(languages).map(function(language) {
       new webpack.DefinePlugin({
         'SERVICE_URL': JSON.stringify("https://google.com")
       }),
+      new ExtractTextPlugin('index.css'),
     ]
   };
 });

@@ -1,3 +1,5 @@
+@import 'index.config.css' ;
+
 body {
-    background-color: #ddd;
+    background-color: var(--some-color);
 }
