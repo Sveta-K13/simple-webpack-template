@@ -1,89 +1,23 @@
 const path = require('path');
 const webpack = require('webpack');
-// const htmlLoader = require('html-loader');
-// const fileLoader = require('file-loader');
-// const extractLoader = require('extract-loader');
-// const indexHtml = path.join(__dirname, "src", "index.html");
-
-// module.exports = {
-//   context: path.resolve(__dirname, 'src'),
-//   entry: {
-//     'index.html': './index.html',
-//     'index.js': './index.js',
-//   },
-//   output: {
-//     path: path.resolve(__dirname, 'dist'),
-//     filename: '[name]',
-//     publicPath: '/dist',                          // New
-//   },
-//   devServer: {
-//     contentBase: path.resolve(__dirname, 'src'),    // New
-//   },
-//   module: {
-//     rules: [
-//       {
-//         test: /\.html$/,
-//         use: [
-//             {
-//                 loader: "html-loader",
-//                 options: {
-//                     attrs: ["img:src", "link:href"],
-//                     interpolate: true,
-//                     ignoreCustomFragments: [/\{\{.*?}}/],
-//                     root: path.resolve(__dirname, 'assets'),
-//                 },
-//             },
-//             {
-//                 loader: "file-loader",
-//                 options: {
-//                     name: "[name].[ext]",
-//                 },
-//             },
-//             {
-//                 loader: "extract-loader",
-//                 options: {
-//                   publicPath: '/dist',
-//                 },
-//             },
-//         ],
-//       },
-//       {
-//         test: /\.(png|jpg|gif)$/,
-//         use: [
-//           {
-//             loader: 'file-loader',
-//             options: {}
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   plugins: [
-//     new webpack.LoaderOptionsPlugin({
-//       options: {
-//         htmlLoader: {
-//           ignoreCustomFragments: [/\{\{.*?}}/],
-//           root: path.resolve(__dirname, 'assets'),
-//           attrs: ['img:src', 'link:href']
-//         },
-//         extractLoader: {
-
-//         },
-//       }
-//     })
-//   ],
-// };
+const I18nPlugin = require("i18n-webpack-plugin");
+const languages = {
+  "en": null,
+  "de": require("./languages/de.json")
+};
 
 const indexHtml = path.join(__dirname, "src", "index.html");
 
-module.exports = {
+module.exports = Object.keys(languages).map(function(language) {
+  return {
+    name: language,
     entry: [
         path.join(__dirname, "src", "index.js"),
         indexHtml
     ],
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'index.js',
+      filename: 'index.' + language + '.js',
       publicPath: '/dist',                          // New
     },
     module: {
@@ -131,5 +65,11 @@ module.exports = {
                 ],
             },
         ]
-    }
-};
+    },
+    plugins: [
+      new I18nPlugin(
+        languages[language]
+      )
+    ]
+  };
+});
