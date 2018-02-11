@@ -31,7 +31,11 @@ module.exports = Object.keys(languages).map(function(language) {
             use: [
               {
                 loader: 'css-loader',
-                options: { importLoaders: 1 },
+                options: {
+                  importLoaders: 1,
+                  minimize: true,
+                  sourceMap: true,
+                },
               },
               'postcss-loader',
             ],
