@@ -10,19 +10,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-loader": "^7.1.2",
     "css-loader": "^0.28.9",
-    "extract-loader": "^1.0.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
-    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
     "i18n-webpack-plugin": "^1.0.0",
     "postcss": "^6.0.17",
     "postcss-cssnext": "^3.1.0",
+    "postcss-custom-properties": "^6.2.0",
     "postcss-import": "^11.1.0",
     "postcss-loader": "^2.1.0",
-    "postcss-variables-loader": "^5.0.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
   }

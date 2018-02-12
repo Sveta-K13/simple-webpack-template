@@ -2,10 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const customProperties = require("postcss-custom-properties")();
 const I18nPlugin = require("i18n-webpack-plugin");
 const languages = {
   "en": null,
-  "de": require("./languages/de.json")
+  "de": require("./languages/de.json"),
+  "ru": require("./languages/ru.json")
 };
 
 const indexHtml = path.join(__dirname, "src", "index.html");
@@ -51,18 +53,13 @@ module.exports = Object.keys(languages).map(function(language) {
           //     ],
           // },
       ],
-      loaders: [
-        {
-          test: /\.html$/,
-          loader: 'html-loader',
-        },
-      ],
     },
     plugins: [
       new I18nPlugin(
         languages[language],
       ),
       new HtmlWebpackPlugin({
+        title: 'webpack simple template',
         template: indexHtml,
         filename: 'index.' + language + '.html',
         minify: {
@@ -70,7 +67,8 @@ module.exports = Object.keys(languages).map(function(language) {
         },
       }),
       new webpack.DefinePlugin({
-        'SERVICE_URL': JSON.stringify("https://google.com")
+        'SERVICE_URL': JSON.stringify("https://google.com"),
+        'lang': JSON.stringify(language),
       }),
       new ExtractTextPlugin('index.css'),
     ]
